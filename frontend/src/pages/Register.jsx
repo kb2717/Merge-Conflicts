@@ -1,7 +1,10 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { registerUser } from "../services/auth.service"
 
 export default function Register() {
+  const navigate = useNavigate()
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -14,19 +17,34 @@ export default function Register() {
     careerGoal: "",
   })
 
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(form)
-    alert("Account Created (Mock)")
+    setError("")
+    setLoading(true)
+
+    try {
+      const data = await registerUser(form)
+
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
+
+      navigate("/dashboard")
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-6 py-12">
-
       <div className="w-full max-w-3xl bg-gray-900 border border-gray-800 rounded-2xl p-10 shadow-2xl text-white">
 
         <h1 className="text-3xl font-bold mb-2">
@@ -37,9 +55,14 @@ export default function Register() {
           Build your student profile to receive personalized opportunities.
         </p>
 
+        {error && (
+          <div className="bg-red-500/20 text-red-400 p-3 rounded-lg mb-6 text-sm">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <input
@@ -75,20 +98,18 @@ export default function Register() {
             <input
               type="text"
               name="branch"
-              placeholder="Branch (e.g., CSE, ECE)"
+              placeholder="Branch"
               value={form.branch}
               onChange={handleChange}
-              required
               className="input-style"
             />
 
             <input
               type="number"
               name="year"
-              placeholder="Year (1-4)"
+              placeholder="Year"
               value={form.year}
               onChange={handleChange}
-              required
               className="input-style"
             />
 
@@ -99,46 +120,41 @@ export default function Register() {
               placeholder="CGPA"
               value={form.cgpa}
               onChange={handleChange}
-              required
               className="input-style"
             />
 
           </div>
 
-          {/* Skills */}
           <textarea
             name="skills"
-            placeholder="Skills (comma separated: React, Python, ML)"
+            placeholder="Skills"
             value={form.skills}
             onChange={handleChange}
-            required
             className="input-style h-24"
           />
 
-          {/* Interests */}
           <textarea
             name="interests"
-            placeholder="Interests (e.g., AI Research, Web Dev, FinTech)"
+            placeholder="Interests"
             value={form.interests}
             onChange={handleChange}
             className="input-style h-24"
           />
 
-          {/* Career Goal */}
           <textarea
             name="careerGoal"
-            placeholder="Career Goal (optional)"
+            placeholder="Career Goal"
             value={form.careerGoal}
             onChange={handleChange}
             className="input-style h-24"
           />
 
-          {/* Submit */}
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
           >
-            Create Account
+            {loading ? "Creating..." : "Create Account"}
           </button>
 
         </form>
