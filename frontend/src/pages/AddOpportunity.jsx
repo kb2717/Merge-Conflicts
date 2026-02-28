@@ -1,160 +1,107 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
-import Sidebar from "../components/Sidebar"
-import { createOpportunity } from "../services/opportunity.service"
 
 export default function AddOpportunity() {
   const [form, setForm] = useState({
     title: "",
     company: "",
-    description: "",
-    requiredSkills: "",
-    preferredSkills: "",
-    eligibleBranches: "",
-    minCgpa: "",
     deadline: "",
+    type: "internship",
   })
 
-  const [loading, setLoading] = useState(false)
-
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setLoading(true)
-
-    try {
-      // convert comma strings → arrays
-      const payload = {
-        ...form,
-        requiredSkills: form.requiredSkills.split(",").map(s => s.trim()),
-        preferredSkills: form.preferredSkills.split(",").map(s => s.trim()),
-        eligibleBranches: form.eligibleBranches.split(",").map(s => s.trim()),
-      }
-
-      await createOpportunity(payload)
-
-      alert("✅ Opportunity added successfully!")
-
-      // reset form
-      setForm({
-        title: "",
-        company: "",
-        description: "",
-        requiredSkills: "",
-        preferredSkills: "",
-        eligibleBranches: "",
-        minCgpa: "",
-        deadline: "",
-      })
-    } catch (err) {
-      console.error(err)
-      alert("❌ Failed to add opportunity")
-    } finally {
-      setLoading(false)
-    }
+    alert("Opportunity Added (Mock)")
   }
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
       <Navbar />
 
-      <div className="flex flex-1 w-full">
-        <div className="w-64 flex-shrink-0">
-          <Sidebar />
-        </div>
+      <div className="flex flex-1 items-center justify-center p-6">
+        <div className="w-full max-w-2xl bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 rounded-2xl p-10 shadow-2xl">
 
-        {/* MAIN */}
-        <main className="flex-1 p-8">
-          <h1 className="text-3xl font-bold mb-6">
+          <h1 className="text-3xl font-bold mb-2">
             Add Opportunity
           </h1>
+          <p className="text-gray-400 mb-8">
+            Create a new internship, fellowship, hackathon, or scholarship.
+          </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="max-w-3xl space-y-4"
-          >
-            <input
-              name="title"
-              placeholder="Role Title"
-              value={form.title}
-              onChange={handleChange}
-              className="input"
-              required
-            />
+          <form onSubmit={handleSubmit} className="space-y-6">
 
-            <input
-              name="company"
-              placeholder="Company Name"
-              value={form.company}
-              onChange={handleChange}
-              className="input"
-              required
-            />
+            <div>
+              <label className="block text-sm mb-2 text-gray-300">
+                Title
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={form.title}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
 
-            <textarea
-              name="description"
-              placeholder="Job Description"
-              value={form.description}
-              onChange={handleChange}
-              className="input min-h-[120px]"
-              required
-            />
+            <div>
+              <label className="block text-sm mb-2 text-gray-300">
+                Company
+              </label>
+              <input
+                type="text"
+                name="company"
+                value={form.company}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
 
-            <input
-              name="requiredSkills"
-              placeholder="Required Skills (comma separated)"
-              value={form.requiredSkills}
-              onChange={handleChange}
-              className="input"
-            />
+            <div>
+              <label className="block text-sm mb-2 text-gray-300">
+                Deadline
+              </label>
+              <input
+                type="date"
+                name="deadline"
+                value={form.deadline}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
 
-            <input
-              name="preferredSkills"
-              placeholder="Preferred Skills (comma separated)"
-              value={form.preferredSkills}
-              onChange={handleChange}
-              className="input"
-            />
-
-            <input
-              name="eligibleBranches"
-              placeholder="Eligible Branches (CSE, IT...)"
-              value={form.eligibleBranches}
-              onChange={handleChange}
-              className="input"
-            />
-
-            <input
-              type="number"
-              step="0.01"
-              name="minCgpa"
-              placeholder="Minimum CGPA"
-              value={form.minCgpa}
-              onChange={handleChange}
-              className="input"
-            />
-
-            <input
-              type="date"
-              name="deadline"
-              value={form.deadline}
-              onChange={handleChange}
-              className="input"
-              required
-            />
+            <div>
+              <label className="block text-sm mb-2 text-gray-300">
+                Type
+              </label>
+              <select
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="internship">Internship</option>
+                <option value="fellowship">Fellowship</option>
+                <option value="hackathon">Hackathon</option>
+                <option value="scholarship">Scholarship</option>
+              </select>
+            </div>
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl font-semibold transition"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
             >
-              {loading ? "Adding..." : "Add Opportunity"}
+              Add Opportunity
             </button>
+
           </form>
-        </main>
+        </div>
       </div>
     </div>
   )

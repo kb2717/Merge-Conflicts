@@ -1,54 +1,54 @@
-import MatchScoreBadge from "./MatchScoreBadge"
-import DeadlineBadge from "./DeadlineBadge"
+export default function OpportunityCard({ opportunity, onApplyToggle }) {
+  const isApplied = opportunity.status === "applied"
 
-export default function OpportunityCard({ opportunity }) {
   return (
-    <div className="bg-gray-900 p-5 rounded-2xl border border-gray-800 hover:border-indigo-500 transition">
+    <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 rounded-2xl p-6 flex flex-col justify-between hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
 
-      <div className="flex justify-between items-start mb-3">
-        <h3 className="text-xl font-semibold">{opportunity.title}</h3>
-        {opportunity.matchScore !== undefined && (
-          <MatchScoreBadge score={opportunity.matchScore} />
-        )}
+      <div>
+
+        <div className="flex justify-between items-start mb-4">
+          <h2 className="text-lg font-semibold">
+            {opportunity.title}
+          </h2>
+
+          <span className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full font-medium">
+            {opportunity.matchScore}%
+          </span>
+        </div>
+
+        <p className="text-gray-400 mb-1">
+          {opportunity.company}
+        </p>
+
+        <p className="text-sm text-gray-500 mb-4">
+          Deadline: {opportunity.deadline}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {opportunity.requiredSkills?.map((skill, index) => (
+            <span
+              key={index}
+              className="bg-gray-700 text-xs px-3 py-1 rounded-lg"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+
       </div>
 
-      <p className="text-gray-400 mb-3">{opportunity.company}</p>
-
-      {opportunity.deadline && (
-        <DeadlineBadge deadline={opportunity.deadline} />
-      )}
-
-      {/* REQUIRED SKILLS */}
-      {opportunity.requiredSkills?.length > 0 && (
-        <div className="mt-3">
-          <p className="text-sm text-gray-400 mb-1">Required Skills</p>
-          <div className="flex flex-wrap gap-2">
-            {opportunity.requiredSkills.map((skill, i) => (
-              <span key={i} className="px-2 py-1 bg-gray-800 rounded-lg text-xs">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* MISSING SKILLS */}
-      {opportunity.missingSkills?.length > 0 && (
-        <div className="mt-3">
-          <p className="text-sm text-red-400 mb-1">Missing Skills</p>
-          <div className="flex flex-wrap gap-2">
-            {opportunity.missingSkills.map((skill, i) => (
-              <span key={i} className="px-2 py-1 bg-red-900/40 rounded-lg text-xs">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <button className="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 py-2 rounded-xl font-medium">
-        Apply
+      {/* 🔥 APPLY / DE-APPLY BUTTON */}
+      <button
+        onClick={() => onApplyToggle(opportunity.id)}
+        className={`mt-6 py-2 rounded-xl font-medium transition ${
+          isApplied
+            ? "bg-red-600 hover:bg-red-700"
+            : "bg-indigo-600 hover:bg-indigo-700"
+        }`}
+      >
+        {isApplied ? "Cancel" : "Apply"}
       </button>
+
     </div>
   )
 }

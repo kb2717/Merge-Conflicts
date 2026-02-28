@@ -1,6 +1,5 @@
 import { useState } from "react"
-import AuthLayout from "../components/AuthLayout"
-import { registerUser } from "../services/auth.service"
+import { Link } from "react-router-dom"
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -13,121 +12,145 @@ export default function Register() {
     skills: "",
     interests: "",
     careerGoal: "",
-    resume: null,
   })
 
-  const [loading, setLoading] = useState(false)
-
   const handleChange = (e) => {
-    const { name, value, files } = e.target
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }))
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setLoading(true)
-
-    try {
-      const formData = new FormData()
-
-      Object.keys(form).forEach((key) => {
-        formData.append(key, form[key])
-      })
-
-      await registerUser(formData)
-      alert("🎉 Registration successful!")
-      window.location.href = "/login"
-    } catch (err) {
-      console.error(err)
-      alert("❌ Registration failed")
-    } finally {
-      setLoading(false)
-    }
+    console.log(form)
+    alert("Account Created (Mock)")
   }
 
   return (
-    <AuthLayout title="Create Student Profile">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-6 py-12">
 
-        {/* BASIC INFO */}
-        <input name="name" placeholder="Full Name" className="input" onChange={handleChange} required />
-        <input name="email" placeholder="Email" className="input" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" className="input" onChange={handleChange} required />
+      <div className="w-full max-w-3xl bg-gray-900 border border-gray-800 rounded-2xl p-10 shadow-2xl text-white">
 
-        {/* ACADEMIC */}
-        <select name="branch" className="input" onChange={handleChange} required>
-          <option value="">Select Branch</option>
-          <option>CSE</option>
-          <option>IT</option>
-          <option>ECE</option>
-          <option>ME</option>
-          <option>CE</option>
-        </select>
+        <h1 className="text-3xl font-bold mb-2">
+          Create Your Profile
+        </h1>
 
-        <select name="year" className="input" onChange={handleChange} required>
-          <option value="">Select Year</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
+        <p className="text-gray-400 mb-8">
+          Build your student profile to receive personalized opportunities.
+        </p>
 
-        <input
-          name="cgpa"
-          type="number"
-          step="0.01"
-          placeholder="CGPA"
-          className="input"
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* SKILLS */}
-        <input
-          name="skills"
-          placeholder="Skills (comma separated)"
-          className="input"
-          onChange={handleChange}
-        />
+          {/* Basic Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <input
-          name="interests"
-          placeholder="Interests"
-          className="input"
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
 
-        <input
-          name="careerGoal"
-          placeholder="Career Goal"
-          className="input"
-          onChange={handleChange}
-        />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
 
-        {/* RESUME */}
-        <div className="text-sm text-gray-400">
-          Upload Resume (PDF)
-        </div>
-        <input
-          type="file"
-          name="resume"
-          accept=".pdf"
-          onChange={handleChange}
-          className="block w-full text-sm"
-        />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
 
-        {/* BUTTON */}
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl font-semibold transition"
-        >
-          {loading ? "Creating Profile..." : "Create Profile"}
-        </button>
-      </form>
-    </AuthLayout>
+            <input
+              type="text"
+              name="branch"
+              placeholder="Branch (e.g., CSE, ECE)"
+              value={form.branch}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
+
+            <input
+              type="number"
+              name="year"
+              placeholder="Year (1-4)"
+              value={form.year}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
+
+            <input
+              type="number"
+              step="0.01"
+              name="cgpa"
+              placeholder="CGPA"
+              value={form.cgpa}
+              onChange={handleChange}
+              required
+              className="input-style"
+            />
+
+          </div>
+
+          {/* Skills */}
+          <textarea
+            name="skills"
+            placeholder="Skills (comma separated: React, Python, ML)"
+            value={form.skills}
+            onChange={handleChange}
+            required
+            className="input-style h-24"
+          />
+
+          {/* Interests */}
+          <textarea
+            name="interests"
+            placeholder="Interests (e.g., AI Research, Web Dev, FinTech)"
+            value={form.interests}
+            onChange={handleChange}
+            className="input-style h-24"
+          />
+
+          {/* Career Goal */}
+          <textarea
+            name="careerGoal"
+            placeholder="Career Goal (optional)"
+            value={form.careerGoal}
+            onChange={handleChange}
+            className="input-style h-24"
+          />
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
+          >
+            Create Account
+          </button>
+
+        </form>
+
+        <p className="text-gray-400 text-sm mt-6 text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-indigo-400 hover:underline">
+            Login
+          </Link>
+        </p>
+
+      </div>
+    </div>
   )
 }

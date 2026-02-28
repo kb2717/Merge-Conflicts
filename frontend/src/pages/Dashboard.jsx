@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import OpportunityCard from "../components/OpportunityCard"
@@ -6,6 +6,7 @@ import { getOpportunities } from "../services/opportunity.service"
 
 export default function Dashboard() {
   const [opportunities, setOpportunities] = useState([])
+  const [activeFilter, setActiveFilter] = useState("all")
 
   useEffect(() => {
     const load = async () => {
@@ -15,34 +16,58 @@ export default function Dashboard() {
     load()
   }, [])
 
+  // 🔥 Toggle Apply / De-Apply
+  const handleApplyToggle = (id) => {
+    setOpportunities((prev) =>
+      prev.map((op) =>
+        op.id === id
+          ? {
+              ...op,
+              status: op.status === "applied" ? "saved" : "applied",
+            }
+          : op
+      )
+    )
+  }
+
+  const filteredOpportunities = useMemo(() => {
+    if (activeFilter === "all") return opportunities
+    return opportunities.filter((op) => op.type === activeFilter)
+  }, [opportunities, activeFilter])
+
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
-      
-      {/* TOP NAVBAR */}
       <Navbar />
 
-      {/* BODY */}
-      <div className="flex flex-1 w-full">
-
-        {/* SIDEBAR — FIXED WIDTH */}
-        <div className="w-64 flex-shrink-0">
-          <Sidebar />
+      <div className="flex flex-1">
+        <div className="w-72 flex-shrink-0">
+          <Sidebar
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+          />
         </div>
 
-        {/* MAIN CONTENT — FULL WIDTH */}
-        <main className="flex-1 p-8 overflow-auto">
-          <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+        <main className="flex-1 px-12 py-10 overflow-auto">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {opportunities.map((op) => (
+          <div className="flex justify-between items-center mb-10">
+            <h1 className="text-4xl font-bold">Dashboard</h1>
+
+            <div className="bg-gray-900 px-5 py-2 rounded-xl border border-gray-800 text-sm text-gray-300">
+              Total: {filteredOpportunities.length}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            {filteredOpportunities.map((op) => (
               <OpportunityCard
-                key={op._id || op.id}
+                key={op.id}
                 opportunity={op}
+                onApplyToggle={handleApplyToggle}
               />
             ))}
           </div>
-        </main>
 
+        </main>
       </div>
     </div>
   )

@@ -1,121 +1,57 @@
-// 🔥 Toggle this when backend is ready
-const USE_MOCK = true
-
-// ==============================
-// 🚀 MOCK DATA
-// ==============================
-const mockOpportunities = [
-  {
-    id: 1,
-    title: "Frontend Intern",
-    company: "Google",
-    description: "Work on modern React applications.",
-    requiredSkills: ["React", "JavaScript"],
-    preferredSkills: ["Tailwind"],
-    eligibleBranches: ["CSE", "IT"],
-    minCgpa: 7,
-    deadline: "2026-03-15",
-    matchScore: 82,
-    status: "saved",
-  },
-  {
-    id: 2,
-    title: "React Developer",
-    company: "Microsoft",
-    description: "Build scalable UI systems.",
-    requiredSkills: ["React", "Redux"],
-    preferredSkills: ["TypeScript"],
-    eligibleBranches: ["CSE"],
-    minCgpa: 7.5,
-    deadline: "2026-03-22",
-    matchScore: 76,
-    status: "applied",
-  },
-  {
-    id: 3,
-    title: "Full Stack Intern",
-    company: "Amazon",
-    description: "Work across MERN stack.",
-    requiredSkills: ["Node", "React"],
-    preferredSkills: ["MongoDB"],
-    eligibleBranches: ["CSE", "IT", "ECE"],
-    minCgpa: 8,
-    deadline: "2026-03-30",
-    matchScore: 91,
-    status: "interview",
-  },
-]
-
-// ==============================
-// 📥 GET OPPORTUNITIES
-// ==============================
 export const getOpportunities = async () => {
-  if (USE_MOCK) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockOpportunities), 400)
-    })
+  const types = ["internship", "fellowship", "hackathon", "scholarship"]
+
+  const companies = [
+    "Google",
+    "Microsoft",
+    "Amazon",
+    "Adobe",
+    "IBM",
+    "TCS",
+    "Infosys",
+    "Meta",
+    "Tesla",
+    "OpenAI"
+  ]
+
+  const titles = {
+    internship: "Software Engineering Intern",
+    fellowship: "Tech Fellowship Program",
+    hackathon: "National Hackathon",
+    scholarship: "Merit Scholarship Award"
   }
 
-  // 🔌 REAL BACKEND (future)
-  const { default: api } = await import("./api")
-  const res = await api.get("/opportunities")
-  return res.data
-}
+  const skillsPool = [
+    "React",
+    "Node",
+    "MongoDB",
+    "Python",
+    "Machine Learning",
+    "Leadership",
+    "Teamwork"
+  ]
 
-// ==============================
-// ➕ CREATE OPPORTUNITY
-// ==============================
-export const createOpportunity = async (data) => {
-  if (USE_MOCK) {
-    const newOpportunity = {
-      id: Date.now(),
-      matchScore: Math.floor(Math.random() * 40) + 60,
-      status: "saved",
-      ...data,
+  const data = []
+  let id = 1
+
+  types.forEach((type) => {
+    for (let i = 0; i < 6; i++) {
+      data.push({
+        id: id++,
+        title: `${titles[type]} ${i + 1}`,
+        company:
+          companies[Math.floor(Math.random() * companies.length)],
+        deadline: `2026-0${Math.floor(Math.random() * 4) + 3}-${Math.floor(Math.random() * 20) + 10}`,
+        matchScore: Math.floor(Math.random() * 40) + 60,
+        status: "saved",
+        type: type,
+        requiredSkills: skillsPool.slice(
+          0,
+          Math.floor(Math.random() * 4) + 1
+        ),
+      })
     }
+  })
 
-    mockOpportunities.unshift(newOpportunity)
-
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(newOpportunity), 400)
-    })
-  }
-
-  // 🔌 REAL BACKEND
-  const { default: api } = await import("./api")
-  const res = await api.post("/opportunities", data)
-  return res.data
-}
-
-// ==============================
-// ✏️ UPDATE (future ready)
-// ==============================
-export const updateOpportunity = async (id, data) => {
-  if (USE_MOCK) {
-    const index = mockOpportunities.findIndex((o) => o.id === id)
-    if (index !== -1) {
-      mockOpportunities[index] = { ...mockOpportunities[index], ...data }
-    }
-
-    return mockOpportunities[index]
-  }
-
-  const { default: api } = await import("./api")
-  const res = await api.put(`/opportunities/${id}`, data)
-  return res.data
-}
-
-// ==============================
-// 🗑 DELETE (future ready)
-// ==============================
-export const deleteOpportunity = async (id) => {
-  if (USE_MOCK) {
-    const index = mockOpportunities.findIndex((o) => o.id === id)
-    if (index !== -1) mockOpportunities.splice(index, 1)
-    return true
-  }
-
-  const { default: api } = await import("./api")
-  await api.delete(`/opportunities/${id}`)
-  return true
+  return data
 }

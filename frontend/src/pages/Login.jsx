@@ -1,39 +1,69 @@
 import { useState } from "react"
-import AuthLayout from "../components/AuthLayout"
-import { loginUser } from "../services/auth.service"
+import { Link } from "react-router-dom"
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" })
-  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }))
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setLoading(true)
-
-    try {
-      await loginUser(form)
-      window.location.href = "/dashboard"
-    } catch {
-      alert("Login failed")
-    } finally {
-      setLoading(false)
-    }
+    alert("Login Successful (Mock)")
   }
 
   return (
-    <AuthLayout title="Welcome Back">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="email" placeholder="Email" className="input" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" className="input" onChange={handleChange} required />
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center p-6">
 
-        <button className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl font-semibold">
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-    </AuthLayout>
+      <div className="w-full max-w-md bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 rounded-2xl p-10 shadow-2xl text-white">
+
+        <h1 className="text-3xl font-bold mb-2">
+          Welcome Back
+        </h1>
+        <p className="text-gray-400 mb-8">
+          Login to access your dashboard
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
+          >
+            Login
+          </button>
+
+        </form>
+
+        <p className="text-gray-400 text-sm mt-6 text-center">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-indigo-400 hover:underline">
+            Register
+          </Link>
+        </p>
+
+      </div>
+    </div>
   )
 }
