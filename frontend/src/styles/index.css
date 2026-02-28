@@ -71,3 +71,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+.input {
+  @apply w-full bg-gray-800 border border-gray-700 rounded-xl p-3 outline-none focus:border-indigo-500;
+}
