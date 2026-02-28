@@ -1,60 +1,59 @@
 import { NavLink } from "react-router-dom"
+import { useState } from "react"
 
 export default function Navbar() {
-  const linkStyle =
-    "px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+  const [open, setOpen] = useState(false)
 
-  const activeStyle = "bg-blue-600 text-white"
+  const linkStyle =
+    "px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition"
+
+  const activeStyle = "bg-indigo-600 text-white"
   const inactiveStyle =
-    "text-gray-300 hover:text-white hover:bg-gray-800"
+    "text-gray-300 hover:text-white hover:bg-white/10"
+
+  const links = ["dashboard", "add-opportunity", "login", "register"]
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-gray-900/80 border-b border-gray-800 w-full">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/10">
       <div className="w-full px-6 lg:px-12 py-4 flex items-center justify-between">
-        
-        {/* LOGO */}
-        <div className="text-xl font-bold text-blue-500">
+
+        {/* LEFT LOGO */}
+        <div className="logo-font text-2xl tracking-wider bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
           Opportunity OS
         </div>
 
-        {/* NAV LINKS */}
-        <nav className="flex items-center gap-2">
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-            }
-          >
-            Dashboard
-          </NavLink>
+        {/* RIGHT SIDE */}
+        <div className="flex items-center gap-4">
 
-          <NavLink
-            to="/add-opportunity"
-            className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-            }
+          {/* SLIDING MENU */}
+          <div
+            className={`flex items-center gap-2 overflow-hidden transition-all duration-500 ${open ? "max-w-[600px] opacity-100" : "max-w-0 opacity-0"
+              }`}
           >
-            Add Opportunity
-          </NavLink>
+            {links.map((path) => (
+              <NavLink
+                key={path}
+                to={`/${path}`}
+                className={({ isActive }) =>
+                  `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
+                }
+              >
+                {path.replace("-", " ").toUpperCase()}
+              </NavLink>
+            ))}
+          </div>
 
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-            }
+          {/* HAMBURGER BUTTON */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex flex-col gap-1.5 cursor-pointer group"
           >
-            Login
-          </NavLink>
+            <span className="w-7 h-[2px] bg-white transition-all duration-300 group-hover:w-8"></span>
+            <span className="w-7 h-[2px] bg-white transition-all duration-300 group-hover:w-8"></span>
+            <span className="w-7 h-[2px] bg-white transition-all duration-300 group-hover:w-8"></span>
+          </button>
 
-          <NavLink
-            to="/register"
-            className={({ isActive }) =>
-              `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-            }
-          >
-            Register
-          </NavLink>
-        </nav>
+        </div>
       </div>
     </header>
   )

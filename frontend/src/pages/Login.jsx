@@ -40,7 +40,7 @@ export default function Login() {
           Welcome Back
         </h1>
 
-        <p className="text-gray-400 mb-8">
+        <p className="text-gray-400 tech-font mb-8">
           Login to access your dashboard
         </p>
 
@@ -59,7 +59,7 @@ export default function Login() {
             value={form.email}
             onChange={handleChange}
             required
-            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full tech-font bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <input
@@ -69,20 +69,20 @@ export default function Login() {
             value={form.password}
             onChange={handleChange}
             required
-            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full tech-font bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
+            className="w-full tech-font bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
 
         </form>
 
-        <p className="text-gray-400 text-sm mt-6 text-center">
+        <p className="text-gray-400 tech-font text-sm mt-6 text-center">
           Don't have an account?{" "}
           <Link to="/register" className="text-indigo-400 hover:underline">
             Register

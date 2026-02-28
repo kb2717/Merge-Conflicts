@@ -21,8 +21,8 @@ export default function Sidebar({ activeFilter, setActiveFilter }) {
             onClick={() => setActiveFilter(f.value)}
             className={`w-full text-left px-5 py-3 rounded-2xl transition-all duration-200 ${
               activeFilter === f.value
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                ? "bg-indigo-600 tech-font text-white shadow-lg shadow-indigo-600/30"
+                : "bg-gray-800 tech-font text-gray-300 hover:bg-gray-700"
             }`}
           >
             {f.label}

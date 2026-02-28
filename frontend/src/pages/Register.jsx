@@ -51,7 +51,7 @@ export default function Register() {
           Create Your Profile
         </h1>
 
-        <p className="text-gray-400 mb-8">
+        <p className="text-gray-400 tech-font mb-8">
           Build your student profile to receive personalized opportunities.
         </p>
 
@@ -72,7 +72,7 @@ export default function Register() {
               value={form.name}
               onChange={handleChange}
               required
-              className="input-style"
+              className=" tech-font input-style"
             />
 
             <input
@@ -82,7 +82,7 @@ export default function Register() {
               value={form.email}
               onChange={handleChange}
               required
-              className="input-style"
+              className="tech-font input-style"
             />
 
             <input
@@ -92,7 +92,7 @@ export default function Register() {
               value={form.password}
               onChange={handleChange}
               required
-              className="input-style"
+              className="tech-font input-style"
             />
 
             <input
@@ -101,7 +101,7 @@ export default function Register() {
               placeholder="Branch"
               value={form.branch}
               onChange={handleChange}
-              className="input-style"
+              className="tech-font input-style"
             />
 
             <input
@@ -110,7 +110,7 @@ export default function Register() {
               placeholder="Year"
               value={form.year}
               onChange={handleChange}
-              className="input-style"
+              className="tech-font input-style"
             />
 
             <input
@@ -120,7 +120,7 @@ export default function Register() {
               placeholder="CGPA"
               value={form.cgpa}
               onChange={handleChange}
-              className="input-style"
+              className="tech-font input-style"
             />
 
           </div>
@@ -130,7 +130,7 @@ export default function Register() {
             placeholder="Skills"
             value={form.skills}
             onChange={handleChange}
-            className="input-style h-24"
+            className="tech-font input-style h-24"
           />
 
           <textarea
@@ -138,7 +138,7 @@ export default function Register() {
             placeholder="Interests"
             value={form.interests}
             onChange={handleChange}
-            className="input-style h-24"
+            className="tech-font input-style h-24"
           />
 
           <textarea
@@ -146,20 +146,20 @@ export default function Register() {
             placeholder="Career Goal"
             value={form.careerGoal}
             onChange={handleChange}
-            className="input-style h-24"
+            className="tech-font input-style h-24"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
+            className="w-full tech-font bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-semibold transition"
           >
             {loading ? "Creating..." : "Create Account"}
           </button>
 
         </form>
 
-        <p className="text-gray-400 text-sm mt-6 text-center">
+        <p className="text-gray-400 tech-font text-sm mt-6 text-center">
           Already have an account?{" "}
           <Link to="/login" className="text-indigo-400 hover:underline">
             Login
